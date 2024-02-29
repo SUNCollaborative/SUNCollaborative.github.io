@@ -196,7 +196,7 @@ function mouseUp() {
         reset();
         return;
     }
-    
+   
     const piggyBankRect = getPiggyBankRect();
 
     if (activeCoin != -1) {
@@ -257,7 +257,7 @@ window.ontouchstart = (e) => {
         if (e.changedTouches[i].identifier == activeTouch) {
             mouseX = e.changedTouches[i].clientX;
             mouseY = e.changedTouches[i].clientY;
-            
+           
             mouseDown();
             break;
         }
@@ -265,7 +265,7 @@ window.ontouchstart = (e) => {
 }
 window.ontouchmove = (e) => {
     e.preventDefault();
-    
+   
     if (activeTouch == -1) {
         return;
     }
@@ -279,7 +279,7 @@ window.ontouchmove = (e) => {
 }
 function touchEnd(e) {
     e.preventDefault();
-    
+   
     if (activeTouch == -1) {
         return;
     }
@@ -288,9 +288,9 @@ function touchEnd(e) {
         if (e.changedTouches[i].identifier == activeTouch) {
             mouseX = e.changedTouches[i].clientX;
             mouseY = e.changedTouches[i].clientY;
-            
+           
             mouseUp();
-            
+           
             mouseX = 0;
             mouseY = 0;
 
@@ -351,7 +351,7 @@ function drawCircle(x, y, r) {
 function Coin() {
     this.x = 0;
     // This makes the spawning animation a bit nicer
-    this.y = canvas.height / 2; 
+    this.y = canvas.height / 2;
 
     this.active = false;
     this.radius = canvas.height * (COIN_FRACTION * 0.5);
@@ -399,6 +399,16 @@ function Coin() {
     }
 }
 
+function playAudio(audio) {
+    if (audio.duration > 0 && !audio.paused) {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.play();
+    } else {
+        audio.play();
+    }
+}
+
 const COIN_GRAVITY = 1500;
 function CoinAnimation(x, y, radius, targetX, targetY, isDumpster, time=0.5) {
     this.x = x;
@@ -427,12 +437,12 @@ function CoinAnimation(x, y, radius, targetX, targetY, isDumpster, time=0.5) {
                 numDumpsterCoins++;
                 dumpsterTargetYOffset = canvas.height * DUMPSTER_COIN_GET_OFFSET;
 
-                coinDropSound.play();
+                playAudio(coinDropSound);
             } else {
                 numPiggyBankCoins++;
                 piggyBankTargetYOffset = canvas.height * PIGGY_BANK_COIN_GET_OFFSET;
 
-                cashRegisterSound.play();
+                playAudio(cashRegisterSound);
             }
         }
     }
